@@ -234,6 +234,132 @@
   .disclaimer { border-top: 1px solid var(--border-subtle); padding: 30px 0 60px; font-size: 12px; color: var(--text-muted); font-family: var(--mono); line-height: 1.8; max-width: 700px; }
   .disclaimer strong { color: var(--orange); font-weight: 400; }
 
+  /* Personal findings panel */
+  .my-findings {
+    background: linear-gradient(135deg, #0d1520 0%, #111b28 100%);
+    border: 1px solid var(--amber-dim);
+    border-left: 4px solid var(--amber);
+    border-radius: 3px;
+    padding: 32px 36px;
+    margin-bottom: 8px;
+  }
+
+  .my-findings-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .my-findings-header h3 {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+
+  .my-findings-header .findings-date {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  .finding-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: start;
+    padding: 14px 0;
+    border-bottom: 1px solid #1a2535;
+  }
+
+  .finding-row:last-child { border-bottom: none; }
+
+  .finding-location {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    min-width: 120px;
+    padding-top: 2px;
+  }
+
+  .finding-detail {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .finding-detail strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .finding-size {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--teal);
+    padding-top: 0;
+    white-space: nowrap;
+  }
+
+  .finding-size .unit {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+
+  .finding-assessment {
+    margin-top: 20px;
+    padding: 16px 20px;
+    background: var(--teal-glow);
+    border: 1px solid var(--teal-dim);
+    border-radius: 3px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .finding-assessment strong {
+    color: var(--teal);
+    font-weight: 600;
+  }
+
+  .next-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 3px;
+  }
+
+  .next-step-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--amber);
+    white-space: nowrap;
+  }
+
+  .next-step-text {
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 400;
+  }
+
+  @media (max-width: 768px) {
+    .finding-row { grid-template-columns: 1fr; gap: 4px; }
+    .finding-location { min-width: auto; }
+    .my-findings { padding: 20px; }
+  }
+
   @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
   .card, .phase-banner, .category-label, .guidelines-box { animation: fadeSlideUp 0.5s ease both; }
   .card:nth-child(1) { animation-delay: 0.05s; } .card:nth-child(2) { animation-delay: 0.1s; }
@@ -289,6 +415,47 @@
     <div class="condition-title-group">
       <h2>Intracranial Aneurysm</h2>
       <div class="condition-subtitle">Endovascular, surgical, and pharmacological approaches</div>
+    </div>
+  </div>
+
+  <!-- ===== MY FINDINGS ===== -->
+  <div class="my-findings">
+    <div class="my-findings-header">
+      <h3>My MRA Findings</h3>
+      <span class="findings-date">MRA REPORT 2026</span>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-location">L AComm / ACA</div>
+      <div class="finding-detail">
+        <strong>Medially bulging aneurysm</strong> at the left anterior communicating artery junction with the left anterior cerebral artery. Anterior circulation. Left A1/A2 segments are dominant (right side smaller, normal variation).
+      </div>
+      <div class="finding-size">2.0 <span class="unit">mm</span></div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-location">Basilar Tip</div>
+      <div class="finding-detail">
+        <strong>Mild ectasia</strong> at the basilar tip, at the right superior cerebellar artery and right posterior cerebral artery origin. Posterior circulation. R PCA has fetal-type supply from patent PComm (normal variant). R P1 segment hypoplastic.
+      </div>
+      <div class="finding-size">1.9 <span class="unit">mm</span></div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-location">Overall</div>
+      <div class="finding-detail">
+        <strong>No hemodynamically significant intracranial stenosis or occlusion.</strong> Bilateral ICA, MCA, and vertebral arteries patent. Codominant vertebral arteries. Several normal anatomical variants noted (fetal R PCA, dominant L ACA, diminutive PICA with prominent AICA bilaterally).
+      </div>
+      <div class="finding-size" style="color: var(--teal);">Clear</div>
+    </div>
+
+    <div class="finding-assessment">
+      <strong>Context:</strong> Both findings are sub-3mm, well below the 7mm threshold where rupture risk increases significantly (per ARISE I consensus). The 2mm AComm aneurysm is at a common location for small aneurysms. The 1.9mm basilar tip finding is classified as mild ectasia (widening), not a discrete aneurysm. Both fall squarely in the watchful-waiting category under current guidelines.
+    </div>
+
+    <div class="next-step">
+      <span class="next-step-label">Next Step</span>
+      <span class="next-step-text">Follow-up MRA in 6-12 months to assess stability. Neurology/neurosurgery consultation as needed.</span>
     </div>
   </div>
 
