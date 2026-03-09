@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medical Research Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=Space+Mono:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #060a10;
+    --bg-base: #0c1118;
+    --bg-card: #121a25;
+    --bg-card-hover: #182231;
+    --border-subtle: #1e2a3a;
+    --border-accent: #00d4aa22;
+    --teal: #00d4aa;
+    --teal-dim: #00d4aa88;
+    --teal-glow: #00d4aa33;
+    --orange: #ff6b35;
+    --orange-dim: #ff6b3566;
+    --blue: #4a9eff;
+    --blue-dim: #4a9eff44;
+    --violet: #a78bfa;
+    --violet-dim: #a78bfa44;
+    --rose: #f472b6;
+    --rose-dim: #f472b644;
+    --text-primary: #e4e8f0;
+    --text-secondary: #8892a4;
+    --text-muted: #4d5668;
+    --serif: 'Bodoni Moda', serif;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Source Sans 3', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* Ambient glow */
+  .ambient-glow {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ambient-glow.teal { background: var(--teal); top: -200px; left: -100px; }
+  .ambient-glow.orange { background: var(--orange); bottom: -300px; right: -200px; }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    padding: 60px 0 40px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .header-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 40px;
+  }
+
+  .header-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 5vw, 56px);
+    line-height: 1.1;
+    color: var(--text-primary);
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .header-meta {
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 2;
+  }
+
+  .header-meta .value {
+    color: var(--text-secondary);
+  }
+
+  .conditions-tracked {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .condition-pill {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 6px 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 2px;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: var(--bg-card);
+  }
+
+  /* Section */
+  .section {
+    padding: 50px 0;
+  }
+
+  .section + .section {
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .section-number {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--teal);
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--teal-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    background: var(--teal-glow);
+  }
+
+  .section-title-group h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .section-subtitle {
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    font-weight: 300;
+  }
+
+  /* Category */
+  .category {
+    margin-bottom: 36px;
+  }
+
+  .category-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-left: 2px;
+  }
+
+  /* Cards grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 3px;
+    padding: 24px 28px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--card-accent, var(--teal));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--card-accent, var(--teal-dim));
+    transform: translateY(-2px);
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .card-badges {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .badge.fda { background: var(--orange-dim); color: var(--orange); }
+  .badge.trial { background: var(--blue-dim); color: var(--blue); }
+  .badge.study { background: var(--violet-dim); color: var(--violet); }
+  .badge.device { background: var(--teal-glow); color: var(--teal); }
+  .badge.technique { background: var(--rose-dim); color: var(--rose); }
+  .badge.new { background: var(--orange); color: var(--bg-deep); font-weight: 700; }
+
+  .card-title {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text-primary);
+  }
+
+  .card-body {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .card-date {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  .card-source {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--teal);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+    border-bottom: 1px solid transparent;
+  }
+
+  .card-source:hover {
+    color: var(--text-primary);
+    border-bottom-color: var(--teal);
+  }
+
+  .card-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--teal);
+    margin-top: 10px;
+    padding: 4px 10px;
+    background: var(--teal-glow);
+    border-radius: 2px;
+  }
+
+  .card-stat .stat-value {
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  /* Full-width highlight card */
+  .card.highlight {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, var(--bg-card) 0%, #0f1a22 100%);
+    border-color: var(--teal-dim);
+    padding: 32px 36px;
+  }
+
+  .card.highlight .card-title {
+    font-size: 18px;
+    font-family: var(--serif);
+    font-weight: 400;
+  }
+
+  /* Summary stats bar */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--border-subtle);
+    border: 1px solid var(--border-subtle);
+    border-radius: 3px;
+    margin: 30px 0 50px;
+    overflow: hidden;
+  }
+
+  .stat-item {
+    background: var(--bg-card);
+    padding: 20px 24px;
+  }
+
+  .stat-item .stat-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .stat-item .stat-number {
+    font-family: var(--serif);
+    font-size: 32px;
+    color: var(--teal);
+    line-height: 1;
+  }
+
+  .stat-item .stat-detail {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  /* Disclaimer */
+  .disclaimer {
+    border-top: 1px solid var(--border-subtle);
+    padding: 30px 0 60px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    line-height: 1.8;
+    max-width: 700px;
+  }
+
+  .disclaimer strong {
+    color: var(--orange);
+    font-weight: 400;
+  }
+
+  /* Animation */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card, .stat-item, .section-header, .category-label {
+    animation: fadeSlideUp 0.5s ease both;
+  }
+
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.2s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.3s; }
+
+  .stat-item:nth-child(1) { animation-delay: 0.1s; }
+  .stat-item:nth-child(2) { animation-delay: 0.15s; }
+  .stat-item:nth-child(3) { animation-delay: 0.2s; }
+  .stat-item:nth-child(4) { animation-delay: 0.25s; }
+  .stat-item:nth-child(5) { animation-delay: 0.3s; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .container { padding: 0 20px; }
+    header { padding: 40px 0 30px; }
+    .header-grid { grid-template-columns: 1fr; gap: 20px; }
+    .header-meta { text-align: left; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .section-header { grid-template-columns: 1fr; gap: 12px; }
+    .card.highlight { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ambient-glow teal"></div>
+<div class="ambient-glow orange"></div>
+
+<div class="container">
+
+  <header>
+    <div class="header-grid">
+      <div>
+        <div class="header-label">Personal Medical Research Tracker</div>
+        <h1>Treatment <em>Intelligence</em><br>Briefing</h1>
+        <div class="conditions-tracked">
+          <span class="condition-pill">Intracranial Aneurysm</span>
+          <span class="condition-pill">Deviated Septum</span>
+        </div>
+      </div>
+      <div class="header-meta">
+        LAST UPDATED <span class="value">2026-03-08</span><br>
+        STATUS <span class="value">ACTIVE MONITORING</span><br>
+        SOURCES <span class="value">PubMed / FDA / ClinicalTrials</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Summary Stats -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-label">Conditions Tracked</div>
+      <div class="stat-number">2</div>
+      <div class="stat-detail">Active monitoring</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">Research Items</div>
+      <div class="stat-number">16</div>
+      <div class="stat-detail">Studies, devices, trials</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">FDA Actions</div>
+      <div class="stat-number">3</div>
+      <div class="stat-detail">Pending or recent</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">Active Trials</div>
+      <div class="stat-number">2</div>
+      <div class="stat-detail">Enrolling or upcoming</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">New Devices</div>
+      <div class="stat-number">5</div>
+      <div class="stat-detail">2024-2026 launches</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: Intracranial Aneurysm -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-number">01</div>
+      <div class="section-title-group">
+        <h2>Intracranial Aneurysm</h2>
+        <div class="section-subtitle">Treatment, management, and emerging interventions</div>
+      </div>
+    </div>
+
+    <!-- FDA & Regulatory -->
+    <div class="category">
+      <div class="category-label">FDA &amp; Regulatory Activity</div>
+      <div class="cards-grid">
+
+        <div class="card" style="--card-accent: var(--orange);">
+          <div class="card-top">
+            <div class="card-title">Spryte Medical nOCT Imaging System</div>
+            <div class="card-badges">
+              <span class="badge new">New</span>
+              <span class="badge fda">FDA IDE</span>
+            </div>
+          </div>
+          <div class="card-body">
+            First FDA-approved clinical trial of an intravascular optical imaging system designed specifically for the neurovasculature. The nOCT system uses high-resolution optical coherence tomography to provide micron-level image resolution of intracranial vessel walls and therapeutic devices during aneurysm treatment. The INSYTE pivotal trial will evaluate safety and effectiveness.
+          </div>
+          <div class="card-stat">
+            <span>Enrollment:</span>
+            <span class="stat-value">Early 2026</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-date">NOV 2025</span>
+            <a class="card-source" href="https://www.globenewswire.com/news-release/2025/11/19/3191153/0/en/Spryte-Medical-Receives-FDA-IDE-Approval-to-Initiate-INSYTE-US-Pivotal-Trial-evaluating-the-nOCT-Imaging-System-during-Brain-Aneurysm-Treatment.html" target="_blank" rel="noopener">GlobeNewsWire &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--orange);">
+          <div class="card-top">
+            <div class="card-title">GTx-104 Injectable Nimodipine</div>
+            <div class="card-badges">
+              <span class="badge fda">FDA Decision</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Injectable formulation of nimodipine for patients with aneurysmal subarachnoid hemorrhage. Designed for peripheral IV use as an aqueous formulation, replacing the current oral nimodipine regimen which can be difficult to administer in critically ill patients. FDA decision expected in 2026.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2026 EXPECTED</span>
+            <a class="card-source" href="https://www.neurologylive.com/view/previewing-expected-fda-decisions-in-neurology-for-2026" target="_blank" rel="noopener">NeurologyLive &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--teal);">
+          <div class="card-top">
+            <div class="card-title">Kaneka i-ED COIL (EU Launch)</div>
+            <div class="card-badges">
+              <span class="badge device">Device</span>
+              <span class="badge new">New</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Kaneka Corporation launched its i-ED COIL for brain aneurysm embolization across Europe following EU Medical Device Regulation (MDR) certification. Represents the latest generation of embolic coils for endovascular aneurysm treatment.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">JAN 2025</span>
+            <a class="card-source" href="https://www.coherentmi.com/industry-reports/intracranial-aneurysm-market" target="_blank" rel="noopener">Market Report &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Flow Diverters -->
+    <div class="category">
+      <div class="category-label">Flow Diverter Technology</div>
+      <div class="cards-grid">
+
+        <div class="card highlight" style="--card-accent: var(--teal);">
+          <div class="card-top">
+            <div class="card-title">FRED X Flow Diverter: Multicenter US Study Results</div>
+            <div class="card-badges">
+              <span class="badge study">Study</span>
+              <span class="badge device">Device</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Largest US series documenting the FRED X flow diverter's efficacy, safety, and long-term outcomes. The device incorporates innovative X technology surface coating to reduce platelet adhesion and thrombogenicity. Patients treated between Feb 2022 and Feb 2024 at 6 high-volume centers.
+          </div>
+          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <div class="card-stat">
+              <span>Favorable outcomes:</span>
+              <span class="stat-value">97.7%</span>
+            </div>
+            <div class="card-stat">
+              <span>Complete/near-complete occlusion:</span>
+              <span class="stat-value">86.9%</span>
+            </div>
+            <div class="card-stat">
+              <span>Mortality:</span>
+              <span class="stat-value">0.6%</span>
+            </div>
+          </div>
+          <div class="card-footer" style="margin-top: 16px;">
+            <span class="card-date">2025 PUBLICATION</span>
+            <a class="card-source" href="https://pubmed.ncbi.nlm.nih.gov/40020234/" target="_blank" rel="noopener">PubMed &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--blue);">
+          <div class="card-top">
+            <div class="card-title">Fourth-Generation Flow Diverters</div>
+            <div class="card-badges">
+              <span class="badge device">Device</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Next-generation flow diverters achieving 81.7% six-month occlusion rates with newer coated designs. Flow diverter segment expanding at a 14.0% CAGR, reflecting rapid clinical adoption and shifting preferences toward technology-intensive solutions.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2024-2025</span>
+            <a class="card-source" href="https://www.mordorintelligence.com/industry-reports/intracranial-aneurysm-market" target="_blank" rel="noopener">Mordor Intelligence &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--violet);">
+          <div class="card-top">
+            <div class="card-title">Intrasaccular Flow Disruptors</div>
+            <div class="card-badges">
+              <span class="badge device">Device</span>
+            </div>
+          </div>
+          <div class="card-body">
+            A newer class of devices placed inside the aneurysm sac rather than across the parent vessel. Eliminates the need for parent-vessel deployment, reducing risks associated with traditional flow diversion. Particularly promising for wide-necked bifurcation aneurysms.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">EMERGING</span>
+            <a class="card-source" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10126349/" target="_blank" rel="noopener">PMC Review &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Emerging Tech -->
+    <div class="category">
+      <div class="category-label">Emerging Technologies &amp; Research</div>
+      <div class="cards-grid">
+
+        <div class="card" style="--card-accent: var(--violet);">
+          <div class="card-top">
+            <div class="card-title">Surface-Engineered Nano-Coils</div>
+            <div class="card-badges">
+              <span class="badge study">Research</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Next-generation embolic coils with surface engineering at the nanoscale to improve biocompatibility and promote faster aneurysm healing. These coils are shifting clinical preferences alongside flow diverters as part of the broader move toward technology-intensive endovascular solutions.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2024-2025</span>
+            <a class="card-source" href="https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2023.1156887/full" target="_blank" rel="noopener">Frontiers Review &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--blue);">
+          <div class="card-top">
+            <div class="card-title">ARISE I Consensus on Aneurysm Management</div>
+            <div class="card-badges">
+              <span class="badge study">Consensus</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Major consensus review published in Stroke (AHA journal) establishing updated management guidelines for intracranial aneurysms. Covers screening recommendations, watchful waiting criteria for small unruptured aneurysms, and risk stratification frameworks to guide treatment decisions.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2024</span>
+            <a class="card-source" href="https://www.ahajournals.org/doi/10.1161/STROKEAHA.123.046208" target="_blank" rel="noopener">AHA Journals &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--teal);">
+          <div class="card-top">
+            <div class="card-title">UCSF Aneurysm Clinical Trials</div>
+            <div class="card-badges">
+              <span class="badge trial">Trials</span>
+            </div>
+          </div>
+          <div class="card-body">
+            UCSF is running multiple active aneurysm clinical trials in 2026, representing one of the largest academic trial portfolios for intracranial aneurysm treatment in the United States. Studies cover new devices, imaging, and treatment protocols.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2026 ACTIVE</span>
+            <a class="card-source" href="https://clinicaltrials.ucsf.edu/aneurysm" target="_blank" rel="noopener">UCSF Trials &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: Deviated Septum -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-number">02</div>
+      <div class="section-title-group">
+        <h2>Deviated Septum</h2>
+        <div class="section-subtitle">Surgical innovation, minimally invasive techniques, and emerging materials</div>
+      </div>
+    </div>
+
+    <!-- Minimally Invasive -->
+    <div class="category">
+      <div class="category-label">Minimally Invasive Innovations</div>
+      <div class="cards-grid">
+
+        <div class="card highlight" style="--card-accent: var(--rose);">
+          <div class="card-top">
+            <div class="card-title">ClearPath Nasal Balloon Catheter System</div>
+            <div class="card-badges">
+              <span class="badge new">New</span>
+              <span class="badge device">Device</span>
+              <span class="badge technique">Technique</span>
+            </div>
+          </div>
+          <div class="card-body">
+            A precision-guided nasal balloon catheter designed to gently reposition targeted nasal structures without extensive tissue trauma. Uses an inflatable balloon and guidance system for precision mechanical control. Compatible with office-based procedures under local anesthesia, representing a major shift toward outpatient septal correction.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2025</span>
+            <a class="card-source" href="https://www.clearpathnasal.com/blog/the-future-of-septal-surgery-clearpath-and-the-shift-toward-minimally-invasive-ent" target="_blank" rel="noopener">ClearPath Nasal &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--rose);">
+          <div class="card-top">
+            <div class="card-title">Incisionless Septoplasty</div>
+            <div class="card-badges">
+              <span class="badge technique">Technique</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Uses high-definition endoscopic cameras and specialized instruments for precise correction with minimal impact on surrounding tissues. Inflatable dilators gently expand nasal passages for improved access and visibility. No external incisions, reduced recovery time, and preservation of natural nasal structure.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2024-2025</span>
+            <a class="card-source" href="https://www.shahfacialplastics.com/blog/incisionless-septoplasty-benefits/" target="_blank" rel="noopener">Shah Facial Plastics &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Surgical Advances -->
+    <div class="category">
+      <div class="category-label">Surgical Technique Advances</div>
+      <div class="cards-grid">
+
+        <div class="card" style="--card-accent: var(--violet);">
+          <div class="card-top">
+            <div class="card-title">Modified Extracorporeal Septoplasty</div>
+            <div class="card-badges">
+              <span class="badge study">Study</span>
+              <span class="badge technique">Technique</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Prospective study showing improved quality of life and aesthetics with a low complication rate. Modified maneuvers preserve the philosophy of extracorporeal septoplasty while reducing technical complexity, decreasing surgical time, and eliminating the need for drills. Keystone preservation reduces risk of dorsal destabilization.
+          </div>
+          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <div class="card-stat">
+              <span>NOSE score reduction:</span>
+              <span class="stat-value">-42.0</span>
+            </div>
+            <div class="card-stat">
+              <span>Residual deviation:</span>
+              <span class="stat-value">7.4%</span>
+            </div>
+          </div>
+          <div class="card-footer" style="margin-top: 16px;">
+            <span class="card-date">2024</span>
+            <a class="card-source" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10912845/" target="_blank" rel="noopener">PMC &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--blue);">
+          <div class="card-top">
+            <div class="card-title">Sling-Bridge Technique</div>
+            <div class="card-badges">
+              <span class="badge new">New</span>
+              <span class="badge technique">Technique</span>
+            </div>
+          </div>
+          <div class="card-body">
+            A novel technique in extracorporeal septorhinoplasty that introduces a new method for stabilizing the reconstructed septum. Published in Frontiers in Surgery (2024), representing an evolution in how surgeons approach complex septal deformities involving the L-strut.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2024</span>
+            <a class="card-source" href="https://www.frontiersin.org/journals/surgery/articles/10.3389/fsurg.2024.1369067/full" target="_blank" rel="noopener">Frontiers &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--violet);">
+          <div class="card-top">
+            <div class="card-title">Septoplasty vs. Non-Surgical: Meta-Analysis</div>
+            <div class="card-badges">
+              <span class="badge study">Meta-Analysis</span>
+            </div>
+          </div>
+          <div class="card-body">
+            A 2025 systematic review and meta-analysis of randomized controlled trials found that septoplasty significantly improved NOSE scores compared to non-surgical interventions at 6 and 12 months, though no notable differences at 3 months. Strengthens the evidence base for surgical intervention in moderate-to-severe cases.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2025</span>
+            <a class="card-source" href="https://link.springer.com/article/10.1007/s00405-024-08937-x" target="_blank" rel="noopener">Springer &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Materials & Implants -->
+    <div class="category">
+      <div class="category-label">Materials &amp; Implant Innovation</div>
+      <div class="cards-grid">
+
+        <div class="card" style="--card-accent: var(--teal);">
+          <div class="card-top">
+            <div class="card-title">3D-Printed PCL Nasal Septal Implants</div>
+            <div class="card-badges">
+              <span class="badge device">Device</span>
+              <span class="badge study">Study</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Composite microporous polycaprolactone (PCL) nasal implants created via 3D printing demonstrate long-term clinical efficacy and safety. The implants provide proper mechanical support with excellent biocompatibility and surgical manipulability. Patient-specific designs enable precise fit for individual septal anatomy.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2024-2025</span>
+            <a class="card-source" href="https://pubmed.ncbi.nlm.nih.gov/34291346/" target="_blank" rel="noopener">PubMed &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--teal);">
+          <div class="card-top">
+            <div class="card-title">Bioabsorbable PLA/PCL Mesh Splints</div>
+            <div class="card-badges">
+              <span class="badge device">Device</span>
+            </div>
+          </div>
+          <div class="card-body">
+            3D-printed bioabsorbable nasal splints made from PLA or PCL that degrade after 2-3 years, providing sufficient support time post-surgery. Used as inner splints to prevent secondary deformation, with simple design allowing easy insertion between septal cartilage and perichondrium without specific complications.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2024-2025</span>
+            <a class="card-source" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10180510/" target="_blank" rel="noopener">PMC &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--blue);">
+          <div class="card-top">
+            <div class="card-title">3D Printing in Nasal Reconstruction: Review</div>
+            <div class="card-badges">
+              <span class="badge study">Review</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Comprehensive 2025 review covering 3D printing applications in nasal reconstruction from 2012-2024. Documents patient-specific interventions, including titanium implants for pediatric reconstruction and bioresorbable polymer implants at the point of care. Establishes evidence base for when and why 3D printing works.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2025</span>
+            <a class="card-source" href="https://www.mdpi.com/2227-9059/13/6/1434" target="_blank" rel="noopener">MDPI &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    <strong>DISCLAIMER:</strong> This tracker aggregates publicly available research for personal reference only. It does not constitute medical advice. Always consult qualified healthcare providers for treatment decisions. Sources linked where available. Research landscape current as of March 2026.
+  </div>
+
+</div>
+
+<script>
+  // Intersection Observer for scroll-triggered animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.card, .stat-item').forEach(el => {
+    el.style.animationPlayState = 'paused';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
