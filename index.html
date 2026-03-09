@@ -26,6 +26,8 @@
     --violet-dim: #a78bfa44;
     --rose: #f472b6;
     --rose-dim: #f472b644;
+    --amber: #fbbf24;
+    --amber-dim: #fbbf2444;
     --text-primary: #e4e8f0;
     --text-secondary: #8892a4;
     --text-muted: #4d5668;
@@ -46,7 +48,6 @@
     overflow-x: hidden;
   }
 
-  /* Noise texture overlay */
   body::before {
     content: '';
     position: fixed;
@@ -56,7 +57,6 @@
     z-index: 9999;
   }
 
-  /* Ambient glow */
   .ambient-glow {
     position: fixed;
     width: 600px;
@@ -78,7 +78,6 @@
     z-index: 1;
   }
 
-  /* Header */
   header {
     padding: 60px 0 40px;
     border-bottom: 1px solid var(--border-subtle);
@@ -108,10 +107,7 @@
     color: var(--text-primary);
   }
 
-  h1 em {
-    font-style: italic;
-    color: var(--teal);
-  }
+  h1 em { font-style: italic; color: var(--teal); }
 
   .header-meta {
     text-align: right;
@@ -121,9 +117,7 @@
     line-height: 2;
   }
 
-  .header-meta .value {
-    color: var(--text-secondary);
-  }
+  .header-meta .value { color: var(--text-secondary); }
 
   .conditions-tracked {
     display: flex;
@@ -144,14 +138,8 @@
     background: var(--bg-card);
   }
 
-  /* Section */
-  .section {
-    padding: 50px 0;
-  }
-
-  .section + .section {
-    border-top: 1px solid var(--border-subtle);
-  }
+  .section { padding: 50px 0; }
+  .section + .section { border-top: 1px solid var(--border-subtle); }
 
   .section-header {
     display: grid;
@@ -190,10 +178,7 @@
     font-weight: 300;
   }
 
-  /* Category */
-  .category {
-    margin-bottom: 36px;
-  }
+  .category { margin-bottom: 36px; }
 
   .category-label {
     font-family: var(--mono);
@@ -205,7 +190,6 @@
     padding-left: 2px;
   }
 
-  /* Cards grid */
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
@@ -240,9 +224,7 @@
     transform: translateY(-2px);
   }
 
-  .card:hover::before {
-    opacity: 1;
-  }
+  .card:hover::before { opacity: 1; }
 
   .card-top {
     display: flex;
@@ -275,7 +257,9 @@
   .badge.study { background: var(--violet-dim); color: var(--violet); }
   .badge.device { background: var(--teal-glow); color: var(--teal); }
   .badge.technique { background: var(--rose-dim); color: var(--rose); }
+  .badge.ai { background: var(--amber-dim); color: var(--amber); }
   .badge.new { background: var(--orange); color: var(--bg-deep); font-weight: 700; }
+  .badge.landmark { background: var(--teal); color: var(--bg-deep); font-weight: 700; }
 
   .card-title {
     font-family: var(--sans);
@@ -340,7 +324,6 @@
     font-size: 14px;
   }
 
-  /* Full-width highlight card */
   .card.highlight {
     grid-column: 1 / -1;
     background: linear-gradient(135deg, var(--bg-card) 0%, #0f1a22 100%);
@@ -354,10 +337,9 @@
     font-weight: 400;
   }
 
-  /* Summary stats bar */
   .stats-bar {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 1px;
     background: var(--border-subtle);
     border: 1px solid var(--border-subtle);
@@ -394,7 +376,63 @@
     margin-top: 4px;
   }
 
-  /* Disclaimer */
+  /* Guidelines box */
+  .guidelines-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--amber);
+    border-radius: 3px;
+    padding: 28px 32px;
+    margin-top: 16px;
+  }
+
+  .guidelines-box h3 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 16px;
+  }
+
+  .guidelines-box ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .guidelines-box li {
+    font-size: 14px;
+    color: var(--text-secondary);
+    padding: 6px 0;
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .guidelines-box li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-muted);
+  }
+
+  .guidelines-box .risk-tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 2px;
+    margin-left: 6px;
+  }
+
+  .risk-tag.high { background: var(--orange-dim); color: var(--orange); }
+  .risk-tag.mod { background: var(--amber-dim); color: var(--amber); }
+
   .disclaimer {
     border-top: 1px solid var(--border-subtle);
     padding: 30px 0 60px;
@@ -410,13 +448,12 @@
     font-weight: 400;
   }
 
-  /* Animation */
   @keyframes fadeSlideUp {
     from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .card, .stat-item, .section-header, .category-label {
+  .card, .stat-item, .section-header, .category-label, .guidelines-box {
     animation: fadeSlideUp 0.5s ease both;
   }
 
@@ -426,14 +463,16 @@
   .card:nth-child(4) { animation-delay: 0.2s; }
   .card:nth-child(5) { animation-delay: 0.25s; }
   .card:nth-child(6) { animation-delay: 0.3s; }
+  .card:nth-child(7) { animation-delay: 0.35s; }
+  .card:nth-child(8) { animation-delay: 0.4s; }
 
   .stat-item:nth-child(1) { animation-delay: 0.1s; }
   .stat-item:nth-child(2) { animation-delay: 0.15s; }
   .stat-item:nth-child(3) { animation-delay: 0.2s; }
   .stat-item:nth-child(4) { animation-delay: 0.25s; }
   .stat-item:nth-child(5) { animation-delay: 0.3s; }
+  .stat-item:nth-child(6) { animation-delay: 0.35s; }
 
-  /* Responsive */
   @media (max-width: 768px) {
     .container { padding: 0 20px; }
     header { padding: 40px 0 30px; }
@@ -442,6 +481,7 @@
     .cards-grid { grid-template-columns: 1fr; }
     .section-header { grid-template-columns: 1fr; gap: 12px; }
     .card.highlight { padding: 24px; }
+    .guidelines-box { padding: 20px; }
   }
 </style>
 </head>
@@ -465,47 +505,51 @@
       <div class="header-meta">
         LAST UPDATED <span class="value">2026-03-08</span><br>
         STATUS <span class="value">ACTIVE MONITORING</span><br>
-        SOURCES <span class="value">PubMed / FDA / ClinicalTrials</span>
+        SOURCES <span class="value">PubMed / FDA / ClinicalTrials / AHA</span>
       </div>
     </div>
   </header>
 
-  <!-- Summary Stats -->
   <div class="stats-bar">
     <div class="stat-item">
-      <div class="stat-label">Conditions Tracked</div>
+      <div class="stat-label">Conditions</div>
       <div class="stat-number">2</div>
       <div class="stat-detail">Active monitoring</div>
     </div>
     <div class="stat-item">
       <div class="stat-label">Research Items</div>
-      <div class="stat-number">16</div>
+      <div class="stat-number">34</div>
       <div class="stat-detail">Studies, devices, trials</div>
     </div>
     <div class="stat-item">
       <div class="stat-label">FDA Actions</div>
-      <div class="stat-number">3</div>
-      <div class="stat-detail">Pending or recent</div>
+      <div class="stat-number">5</div>
+      <div class="stat-detail">Approvals &amp; pending</div>
     </div>
     <div class="stat-item">
       <div class="stat-label">Active Trials</div>
-      <div class="stat-number">2</div>
-      <div class="stat-detail">Enrolling or upcoming</div>
+      <div class="stat-number">4</div>
+      <div class="stat-detail">Enrolling or recruiting</div>
     </div>
     <div class="stat-item">
       <div class="stat-label">New Devices</div>
-      <div class="stat-number">5</div>
+      <div class="stat-number">9</div>
       <div class="stat-detail">2024-2026 launches</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">Landmark Trials</div>
+      <div class="stat-number">3</div>
+      <div class="stat-detail">Practice-changing</div>
     </div>
   </div>
 
-  <!-- SECTION 1: Intracranial Aneurysm -->
+  <!-- ==================== SECTION 1: INTRACRANIAL ANEURYSM ==================== -->
   <section class="section">
     <div class="section-header">
       <div class="section-number">01</div>
       <div class="section-title-group">
         <h2>Intracranial Aneurysm</h2>
-        <div class="section-subtitle">Treatment, management, and emerging interventions</div>
+        <div class="section-subtitle">Treatment, management, AI diagnostics, and emerging interventions</div>
       </div>
     </div>
 
@@ -516,14 +560,14 @@
 
         <div class="card" style="--card-accent: var(--orange);">
           <div class="card-top">
-            <div class="card-title">Spryte Medical nOCT Imaging System</div>
+            <div class="card-title">Spryte Medical nOCT Imaging System (INSYTE Trial)</div>
             <div class="card-badges">
               <span class="badge new">New</span>
               <span class="badge fda">FDA IDE</span>
             </div>
           </div>
           <div class="card-body">
-            First FDA-approved clinical trial of an intravascular optical imaging system designed specifically for the neurovasculature. The nOCT system uses high-resolution optical coherence tomography to provide micron-level image resolution of intracranial vessel walls and therapeutic devices during aneurysm treatment. The INSYTE pivotal trial will evaluate safety and effectiveness.
+            First FDA-approved clinical trial of an intravascular optical imaging system for the neurovasculature. Uses optical coherence tomography for micron-level resolution of vessel walls and therapeutic devices during aneurysm treatment. The INSYTE pivotal trial will evaluate safety and effectiveness.
           </div>
           <div class="card-stat">
             <span>Enrollment:</span>
@@ -543,7 +587,7 @@
             </div>
           </div>
           <div class="card-body">
-            Injectable formulation of nimodipine for patients with aneurysmal subarachnoid hemorrhage. Designed for peripheral IV use as an aqueous formulation, replacing the current oral nimodipine regimen which can be difficult to administer in critically ill patients. FDA decision expected in 2026.
+            Injectable formulation of nimodipine for aneurysmal subarachnoid hemorrhage. Designed for peripheral IV use, replacing the oral regimen which is difficult to administer in critically ill patients. FDA decision expected 2026.
           </div>
           <div class="card-footer">
             <span class="card-date">2026 EXPECTED</span>
@@ -560,32 +604,49 @@
             </div>
           </div>
           <div class="card-body">
-            Kaneka Corporation launched its i-ED COIL for brain aneurysm embolization across Europe following EU Medical Device Regulation (MDR) certification. Represents the latest generation of embolic coils for endovascular aneurysm treatment.
+            Launched in Europe (Oct 2025) following EU MDR certification (July 2025). Features specialized wire thickness for denser packing and treatment of irregularly shaped aneurysms. On the Japanese market since 2019, now expanding globally.
           </div>
           <div class="card-footer">
-            <span class="card-date">JAN 2025</span>
-            <a class="card-source" href="https://www.coherentmi.com/industry-reports/intracranial-aneurysm-market" target="_blank" rel="noopener">Market Report &rarr;</a>
+            <span class="card-date">OCT 2025</span>
+            <a class="card-source" href="https://neuronewsinternational.com/kaneka-announces-european-launch-of-i-ed-brain-aneurysm-embolisation-coil/" target="_blank" rel="noopener">Neuro News &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--orange);">
+          <div class="card-top">
+            <div class="card-title">Pipeline Flex with Shield Technology (Medtronic)</div>
+            <div class="card-badges">
+              <span class="badge fda">FDA Approved</span>
+              <span class="badge device">Device</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Third-generation flow diverter with phosphorylcholine surface modification, FDA approved April 2021. SHIELD Study: 77.2% complete occlusion at 12 months, 3.2% primary safety endpoint. Remains a leading option for large/giant and wide-neck aneurysms.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">APR 2021 / ACTIVE</span>
+            <a class="card-source" href="https://news.medtronic.com/2021-04-21-Medtronic-Receives-U-S-FDA-Approval-for-Pipeline-TM-Flex-Embolization-Device-with-Shield-Technology-TM" target="_blank" rel="noopener">Medtronic &rarr;</a>
           </div>
         </div>
 
       </div>
     </div>
 
-    <!-- Flow Diverters -->
+    <!-- Flow Diverters & Intrasaccular -->
     <div class="category">
-      <div class="category-label">Flow Diverter Technology</div>
+      <div class="category-label">Flow Diverters &amp; Intrasaccular Devices</div>
       <div class="cards-grid">
 
         <div class="card highlight" style="--card-accent: var(--teal);">
           <div class="card-top">
-            <div class="card-title">FRED X Flow Diverter: Multicenter US Study Results</div>
+            <div class="card-title">FRED X Flow Diverter: Multicenter US Study</div>
             <div class="card-badges">
-              <span class="badge study">Study</span>
+              <span class="badge landmark">Landmark</span>
               <span class="badge device">Device</span>
             </div>
           </div>
           <div class="card-body">
-            Largest US series documenting the FRED X flow diverter's efficacy, safety, and long-term outcomes. The device incorporates innovative X technology surface coating to reduce platelet adhesion and thrombogenicity. Patients treated between Feb 2022 and Feb 2024 at 6 high-volume centers.
+            Largest US series documenting the FRED X flow diverter (MicroVention). Incorporates X technology surface coating to reduce platelet adhesion and thrombogenicity. 154 patients treated at 6 high-volume US centers between Feb 2022 and Feb 2024.
           </div>
           <div style="display: flex; gap: 16px; flex-wrap: wrap;">
             <div class="card-stat">
@@ -593,7 +654,7 @@
               <span class="stat-value">97.7%</span>
             </div>
             <div class="card-stat">
-              <span>Complete/near-complete occlusion:</span>
+              <span>Occlusion:</span>
               <span class="stat-value">86.9%</span>
             </div>
             <div class="card-stat">
@@ -602,110 +663,353 @@
             </div>
           </div>
           <div class="card-footer" style="margin-top: 16px;">
-            <span class="card-date">2025 PUBLICATION</span>
+            <span class="card-date">2025</span>
             <a class="card-source" href="https://pubmed.ncbi.nlm.nih.gov/40020234/" target="_blank" rel="noopener">PubMed &rarr;</a>
           </div>
         </div>
 
         <div class="card" style="--card-accent: var(--blue);">
           <div class="card-top">
-            <div class="card-title">Fourth-Generation Flow Diverters</div>
+            <div class="card-title">Surpass Evolve (Stryker): SEASE Post-Market Study</div>
             <div class="card-badges">
+              <span class="badge study">Study</span>
               <span class="badge device">Device</span>
             </div>
           </div>
           <div class="card-body">
-            Next-generation flow diverters achieving 81.7% six-month occlusion rates with newer coated designs. Flow diverter segment expanding at a 14.0% CAGR, reflecting rapid clinical adoption and shifting preferences toward technology-intensive solutions.
-          </div>
-          <div class="card-footer">
-            <span class="card-date">2024-2025</span>
-            <a class="card-source" href="https://www.mordorintelligence.com/industry-reports/intracranial-aneurysm-market" target="_blank" rel="noopener">Mordor Intelligence &rarr;</a>
-          </div>
-        </div>
-
-        <div class="card" style="--card-accent: var(--violet);">
-          <div class="card-top">
-            <div class="card-title">Intrasaccular Flow Disruptors</div>
-            <div class="card-badges">
-              <span class="badge device">Device</span>
-            </div>
-          </div>
-          <div class="card-body">
-            A newer class of devices placed inside the aneurysm sac rather than across the parent vessel. Eliminates the need for parent-vessel deployment, reducing risks associated with traditional flow diversion. Particularly promising for wide-necked bifurcation aneurysms.
-          </div>
-          <div class="card-footer">
-            <span class="card-date">EMERGING</span>
-            <a class="card-source" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10126349/" target="_blank" rel="noopener">PMC Review &rarr;</a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Emerging Tech -->
-    <div class="category">
-      <div class="category-label">Emerging Technologies &amp; Research</div>
-      <div class="cards-grid">
-
-        <div class="card" style="--card-accent: var(--violet);">
-          <div class="card-top">
-            <div class="card-title">Surface-Engineered Nano-Coils</div>
-            <div class="card-badges">
-              <span class="badge study">Research</span>
-            </div>
-          </div>
-          <div class="card-body">
-            Next-generation embolic coils with surface engineering at the nanoscale to improve biocompatibility and promote faster aneurysm healing. These coils are shifting clinical preferences alongside flow diverters as part of the broader move toward technology-intensive endovascular solutions.
-          </div>
-          <div class="card-footer">
-            <span class="card-date">2024-2025</span>
-            <a class="card-source" href="https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2023.1156887/full" target="_blank" rel="noopener">Frontiers Review &rarr;</a>
-          </div>
-        </div>
-
-        <div class="card" style="--card-accent: var(--blue);">
-          <div class="card-top">
-            <div class="card-title">ARISE I Consensus on Aneurysm Management</div>
-            <div class="card-badges">
-              <span class="badge study">Consensus</span>
-            </div>
-          </div>
-          <div class="card-body">
-            Major consensus review published in Stroke (AHA journal) establishing updated management guidelines for intracranial aneurysms. Covers screening recommendations, watchful waiting criteria for small unruptured aneurysms, and risk stratification frameworks to guide treatment decisions.
+            SEASE post-market study of 305 patients (332 aneurysms). Complete occlusion: 73.0% at 10.2 months. Major stroke rate: 2%. Procedure-related mortality: 0.7%. Confirms safety profile of this newer-generation flow diverter.
           </div>
           <div class="card-footer">
             <span class="card-date">2024</span>
-            <a class="card-source" href="https://www.ahajournals.org/doi/10.1161/STROKEAHA.123.046208" target="_blank" rel="noopener">AHA Journals &rarr;</a>
+            <a class="card-source" href="https://pubmed.ncbi.nlm.nih.gov/38663997/" target="_blank" rel="noopener">PubMed &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--violet);">
+          <div class="card-top">
+            <div class="card-title">SILK Vista with P8RI Anti-Thrombogenic Coating</div>
+            <div class="card-badges">
+              <span class="badge study">Preclinical</span>
+              <span class="badge device">Device</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Preclinical study of a P8RI peptide coating (mimicking CD31 protein) on the SILK Vista flow diverter (Balt). Showed significant reduction in fibrin binding and platelet adhesion, potentially reducing the need for aggressive dual antiplatelet therapy.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2025</span>
+            <a class="card-source" href="https://pubmed.ncbi.nlm.nih.gov/38914459/" target="_blank" rel="noopener">PubMed &rarr;</a>
           </div>
         </div>
 
         <div class="card" style="--card-accent: var(--teal);">
           <div class="card-top">
-            <div class="card-title">UCSF Aneurysm Clinical Trials</div>
+            <div class="card-title">WEB Device (Intrasaccular Flow Disruption)</div>
             <div class="card-badges">
-              <span class="badge trial">Trials</span>
+              <span class="badge fda">FDA Approved</span>
+              <span class="badge device">Device</span>
             </div>
           </div>
           <div class="card-body">
-            UCSF is running multiple active aneurysm clinical trials in 2026, representing one of the largest academic trial portfolios for intracranial aneurysm treatment in the United States. Studies cover new devices, imaging, and treatment protocols.
+            Only FDA-approved intrasaccular device. Placed inside the aneurysm sac rather than across the parent vessel. WEB-IT trial: adequate occlusion 84.6% at 1 year, 76.8% sustained at 5 years. Particularly useful for wide-necked bifurcation aneurysms where flow diverters are not ideal.
           </div>
           <div class="card-footer">
-            <span class="card-date">2026 ACTIVE</span>
-            <a class="card-source" href="https://clinicaltrials.ucsf.edu/aneurysm" target="_blank" rel="noopener">UCSF Trials &rarr;</a>
+            <span class="card-date">5-YEAR DATA</span>
+            <a class="card-source" href="https://www.mdpi.com/2077-0383/13/20/6162" target="_blank" rel="noopener">MDPI &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--blue);">
+          <div class="card-top">
+            <div class="card-title">Contour Neurovascular System</div>
+            <div class="card-badges">
+              <span class="badge trial">IDE Trial</span>
+              <span class="badge device">Device</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Dual-layered nitinol mesh forming a bowl-shaped hemisphere at the aneurysm neck. Treats aneurysm necks 2-10.5mm. The US IDE NECC study is currently underway, potentially offering an alternative to the WEB device for intrasaccular treatment.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">ENROLLING</span>
+            <a class="card-source" href="https://pubmed.ncbi.nlm.nih.gov/39151207/" target="_blank" rel="noopener">PubMed &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--violet);">
+          <div class="card-top">
+            <div class="card-title">LVIS EVO vs. Neuroform Atlas (Stent-Assisted Coiling)</div>
+            <div class="card-badges">
+              <span class="badge study">Comparative</span>
+            </div>
+          </div>
+          <div class="card-body">
+            2026 AJNR comparison found LVIS demonstrated significantly higher complete occlusion rates than Neuroform Atlas (52% vs 24%, P=.007) at 1-year follow-up. LVIS EVO is the next-generation braided stent with enhanced visibility and resheathability.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2026</span>
+            <a class="card-source" href="https://www.ajnr.org/content/early/2026/02/12/ajnr.A9034" target="_blank" rel="noopener">AJNR &rarr;</a>
           </div>
         </div>
 
       </div>
     </div>
+
+    <!-- AI & Computational -->
+    <div class="category">
+      <div class="category-label">AI, Machine Learning &amp; Computational</div>
+      <div class="cards-grid">
+
+        <div class="card" style="--card-accent: var(--amber);">
+          <div class="card-top">
+            <div class="card-title">ML Rupture Risk Prediction (Meta-Analysis)</div>
+            <div class="card-badges">
+              <span class="badge ai">AI/ML</span>
+              <span class="badge study">Meta-Analysis</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Systematic review of 36 studies (22,462 patients, 124 ML models). Machine learning models significantly outperform the traditional PHASES score for predicting aneurysm rupture risk. Deep learning models achieved sensitivity 0.792, specificity 0.788 in external validation.
+          </div>
+          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <div class="card-stat">
+              <span>ML AUC:</span>
+              <span class="stat-value">0.84</span>
+            </div>
+            <div class="card-stat">
+              <span>PHASES AUC:</span>
+              <span class="stat-value">0.64</span>
+            </div>
+          </div>
+          <div class="card-footer" style="margin-top: 16px;">
+            <span class="card-date">2025</span>
+            <a class="card-source" href="https://journals.lww.com/neurosurgery/fulltext/2025/11000/machine_learning_based_rupture_risk_prediction_for.9.aspx" target="_blank" rel="noopener">Neurosurgery &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--amber);">
+          <div class="card-top">
+            <div class="card-title">RSNA 2025 AI Detection Challenge</div>
+            <div class="card-badges">
+              <span class="badge ai">AI/ML</span>
+              <span class="badge new">New</span>
+            </div>
+          </div>
+          <div class="card-body">
+            First multi-modality aneurysm detection AI challenge spanning CTA, MRA, and MRI. 9 winning teams, $50K prize pool. Current AI platforms achieve 91.63% sensitivity, 92.20% specificity, outperforming resident radiologists in detection accuracy.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2025</span>
+            <a class="card-source" href="https://www.rsna.org/artificial-intelligence/ai-image-challenge/intracranial-aneurysm-detection-ai-challenge" target="_blank" rel="noopener">RSNA &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--amber);">
+          <div class="card-top">
+            <div class="card-title">CorPath GRX Robotic-Assisted Neuroendovascular Surgery</div>
+            <div class="card-badges">
+              <span class="badge device">Device</span>
+              <span class="badge ai">Robotics</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Siemens/Corindus robotic system studied across 117 patients at 10 sites in 6 countries. 94% completed robotically without switching to manual. 95.7% clinical success, 64.5% achieved complete obliteration (Raymond Class I). First robot-assisted brain aneurysm surgery performed in Toronto.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2024</span>
+            <a class="card-source" href="https://www.biospace.com/corindus-a-siemens-healthineers-company-announces-study-results-demonstrating-safety-and-effectiveness-of-corpath-grx-neurovascular-system" target="_blank" rel="noopener">BioSpace &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--violet);">
+          <div class="card-top">
+            <div class="card-title">Physics-Constrained GNN for Hemodynamic Prediction</div>
+            <div class="card-badges">
+              <span class="badge ai">AI/ML</span>
+              <span class="badge study">Research</span>
+            </div>
+          </div>
+          <div class="card-body">
+            2026 Nature npj Digital Medicine study using physics-constrained graph neural networks for real-time hemodynamic prediction, replacing computationally expensive traditional CFD. Predicts key biomarkers: oscillatory shear index, wall shear stress, and residence time. Low wall shear stress correlates with higher rupture risk.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2026</span>
+            <a class="card-source" href="https://www.nature.com/articles/s41746-026-02404-z" target="_blank" rel="noopener">Nature &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Emerging / Bioabsorbable -->
+    <div class="category">
+      <div class="category-label">Emerging Technologies &amp; Bioabsorbable Devices</div>
+      <div class="cards-grid">
+
+        <div class="card" style="--card-accent: var(--teal);">
+          <div class="card-top">
+            <div class="card-title">Fluid Biomed ReSolv Bioabsorbable Stent</div>
+            <div class="card-badges">
+              <span class="badge new">New</span>
+              <span class="badge device">Device</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Hybrid polymer-metal bioabsorbable stent that diverts blood, forms clot, scaffolds endothelial healing, then dissolves. Fluid Biomed raised $27M for development. Addresses the fundamental limitation of permanent metallic implants in the brain.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2025</span>
+            <a class="card-source" href="https://www.fiercebiotech.com/medtech/fluid-biomed-raises-27m-its-bioabsorbable-brain-aneurysm-stent" target="_blank" rel="noopener">FierceBiotech &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--violet);">
+          <div class="card-top">
+            <div class="card-title">Bioresorbable Flow Diverters: Systematic Review</div>
+            <div class="card-badges">
+              <span class="badge study">Review</span>
+            </div>
+          </div>
+          <div class="card-body">
+            2025 systematic review identified 27 prototype bioresorbable flow diverters across 17 studies. Materials include poly-L-lactic acid, polycaprolactone, and biodegradable iron-manganese-nitrogen metals in hybrid configurations. In vivo: 61% achieved 80%+ sac occlusion, 33% complete occlusion.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2025</span>
+            <a class="card-source" href="https://link.springer.com/article/10.1007/s00234-026-03908-x" target="_blank" rel="noopener">Springer &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--violet);">
+          <div class="card-top">
+            <div class="card-title">TGFB1/SERPINE1 Biomarkers for Vascular Cell Senescence</div>
+            <div class="card-badges">
+              <span class="badge study">Research</span>
+            </div>
+          </div>
+          <div class="card-body">
+            2026 Translational Stroke Research study identified TGFB1 and SERPINE1 as biomarkers of vascular smooth muscle cell senescence in intracranial aneurysms via multi-omics and machine learning. Could guide future pharmacological or gene therapy targets for aneurysm wall stabilization.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2026</span>
+            <a class="card-source" href="https://link.springer.com/article/10.1007/s12975-026-01419-8" target="_blank" rel="noopener">Springer &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Guidelines -->
+    <div class="category">
+      <div class="category-label">Management Guidelines &amp; Screening</div>
+
+      <div class="cards-grid">
+        <div class="card highlight" style="--card-accent: var(--blue);">
+          <div class="card-top">
+            <div class="card-title">ARISE I Consensus Review on Intracranial Aneurysm Management</div>
+            <div class="card-badges">
+              <span class="badge landmark">Landmark</span>
+              <span class="badge study">Consensus</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Major expert consensus published in Stroke (AHA, May 2024). Endorsed endovascular therapy as mainstay for ruptured aneurysms based on robust RCT data. Updated screening, watchful waiting, and treatment decision frameworks. Oral nimodipine remains the only pharmacologic therapy proven to improve SAH outcomes.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">MAY 2024</span>
+            <a class="card-source" href="https://www.ahajournals.org/doi/10.1161/STROKEAHA.123.046208" target="_blank" rel="noopener">AHA Journals &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="guidelines-box">
+        <h3>Screening Recommendations</h3>
+        <ul>
+          <li>Screen patients with 2+ first-degree relatives with intracranial aneurysm or SAH (CTA or MRA)</li>
+          <li>Screen patients with autosomal dominant polycystic kidney disease (ADPKD)</li>
+          <li>Screen patients with type IV Ehlers-Danlos (vascular subtype) and other connective tissue disorders</li>
+          <li>Repeat screening every 5-7 years for high-risk individuals ages 20-80</li>
+          <li>NASH Score for familial screening: predicts IA risk (5-36%) using Number of affected relatives, Age, Smoking, Hypertension</li>
+        </ul>
+      </div>
+
+      <div class="guidelines-box" style="margin-top: 16px;">
+        <h3>Key Risk Factors</h3>
+        <ul>
+          <li>Smoking <span class="risk-tag high">OR 3.0</span></li>
+          <li>Hypertension <span class="risk-tag high">OR 2.9</span></li>
+          <li>Smoking + hypertension have additive effect on risk</li>
+          <li>Family history of stroke <span class="risk-tag mod">OR 1.6</span></li>
+          <li>1 affected family member: ~4% risk. 2+ first-degree relatives: 8-10% risk</li>
+          <li>Female sex, older age, ADPKD, connective tissue disorders, prior SAH</li>
+          <li>Higher rupture risk: &gt;7mm size, posterior circulation, irregular/multilobed morphology</li>
+        </ul>
+      </div>
+    </div>
+
   </section>
 
-  <!-- SECTION 2: Deviated Septum -->
+  <!-- ==================== SECTION 2: DEVIATED SEPTUM ==================== -->
   <section class="section">
     <div class="section-header">
       <div class="section-number">02</div>
       <div class="section-title-group">
         <h2>Deviated Septum</h2>
-        <div class="section-subtitle">Surgical innovation, minimally invasive techniques, and emerging materials</div>
+        <div class="section-subtitle">Surgical innovation, minimally invasive techniques, non-surgical alternatives, and emerging materials</div>
+      </div>
+    </div>
+
+    <!-- Landmark Evidence -->
+    <div class="category">
+      <div class="category-label">Landmark Evidence</div>
+      <div class="cards-grid">
+
+        <div class="card highlight" style="--card-accent: var(--teal);">
+          <div class="card-top">
+            <div class="card-title">NAIROS RCT: Septoplasty vs. Medical Management (Phase III)</div>
+            <div class="card-badges">
+              <span class="badge landmark">Landmark</span>
+              <span class="badge study">Phase III RCT</span>
+            </div>
+          </div>
+          <div class="card-body">
+            The Nasal AIRway Obstruction Study. Phase III, open-label, multicenter RCT across 17 NHS hospitals. 378 participants randomized to septoplasty (n=188) vs. medical management with intranasal steroid/saline spray (n=190). This is the strongest evidence to date that septoplasty outperforms medical management, and septoplasty is 99-100% likely to be cost-effective at the NHS threshold.
+          </div>
+          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <div class="card-stat">
+              <span>SNOT-22 difference:</span>
+              <span class="stat-value">-20.0 pts</span>
+            </div>
+            <div class="card-stat">
+              <span>Septoplasty arm:</span>
+              <span class="stat-value">19.9</span>
+            </div>
+            <div class="card-stat">
+              <span>Medical arm:</span>
+              <span class="stat-value">39.5</span>
+            </div>
+          </div>
+          <div class="card-footer" style="margin-top: 16px;">
+            <span class="card-date">2024</span>
+            <a class="card-source" href="https://www.journalslibrary.nihr.ac.uk/hta/MVFR4028" target="_blank" rel="noopener">NIHR HTA &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--violet);">
+          <div class="card-top">
+            <div class="card-title">Septoplasty vs. Non-Surgical: RCT Meta-Analysis</div>
+            <div class="card-badges">
+              <span class="badge study">Meta-Analysis</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Systematic review of 3 RCTs (721 participants). Septoplasty significantly improved NOSE and SNOT-22 scores at 6 and 12 months vs. non-surgical management, though no notable differences at 3 months. Suggests benefit builds over time. Complication rates: 0.31% revision, 4.12% bleeding/infection.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2024</span>
+            <a class="card-source" href="https://link.springer.com/article/10.1007/s00405-024-08937-x" target="_blank" rel="noopener">Springer &rarr;</a>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -714,37 +1018,75 @@
       <div class="category-label">Minimally Invasive Innovations</div>
       <div class="cards-grid">
 
-        <div class="card highlight" style="--card-accent: var(--rose);">
+        <div class="card" style="--card-accent: var(--rose);">
           <div class="card-top">
-            <div class="card-title">ClearPath Nasal Balloon Catheter System</div>
+            <div class="card-title">ClearPath Balloon Septoplasty System</div>
             <div class="card-badges">
               <span class="badge new">New</span>
+              <span class="badge fda">FDA 510(k)</span>
               <span class="badge device">Device</span>
-              <span class="badge technique">Technique</span>
             </div>
           </div>
           <div class="card-body">
-            A precision-guided nasal balloon catheter designed to gently reposition targeted nasal structures without extensive tissue trauma. Uses an inflatable balloon and guidance system for precision mechanical control. Compatible with office-based procedures under local anesthesia, representing a major shift toward outpatient septal correction.
+            FDA 510(k)-cleared device for patients 17+. Uses a precision-guided balloon catheter with stainless-steel spatula and single-use non-elastic balloon. Tested to withstand up to 10 atm of pressure. Can be performed in-office under local anesthesia. Designed for septal deviations, turbinate hypertrophy, and increasing intranasal space.
+          </div>
+          <div class="card-stat">
+            <span>Success rate:</span>
+            <span class="stat-value">80-90%</span>
           </div>
           <div class="card-footer">
             <span class="card-date">2025</span>
-            <a class="card-source" href="https://www.clearpathnasal.com/blog/the-future-of-septal-surgery-clearpath-and-the-shift-toward-minimally-invasive-ent" target="_blank" rel="noopener">ClearPath Nasal &rarr;</a>
+            <a class="card-source" href="https://www.clearpathnasal.com/" target="_blank" rel="noopener">ClearPath &rarr;</a>
           </div>
         </div>
 
         <div class="card" style="--card-accent: var(--rose);">
           <div class="card-top">
-            <div class="card-title">Incisionless Septoplasty</div>
+            <div class="card-title">Incisionless (No-Knife) Septoplasty</div>
             <div class="card-badges">
               <span class="badge technique">Technique</span>
             </div>
           </div>
           <div class="card-body">
-            Uses high-definition endoscopic cameras and specialized instruments for precise correction with minimal impact on surrounding tissues. Inflatable dilators gently expand nasal passages for improved access and visibility. No external incisions, reduced recovery time, and preservation of natural nasal structure.
+            Office-based procedure under local anesthesia using pressurized inflatable dilators to remodel septal spurs and deflections. HD endoscopic cameras for precise correction. Minimal recovery: mild pain medication for a couple of days, most patients return to work the next day.
           </div>
           <div class="card-footer">
             <span class="card-date">2024-2025</span>
-            <a class="card-source" href="https://www.shahfacialplastics.com/blog/incisionless-septoplasty-benefits/" target="_blank" rel="noopener">Shah Facial Plastics &rarr;</a>
+            <a class="card-source" href="https://advancedentpc.com/incisionless-septoplasty-with-dr-rogers/" target="_blank" rel="noopener">Advanced ENT &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--blue);">
+          <div class="card-top">
+            <div class="card-title">Endoscopic Septoplasty with Powered Instrumentation</div>
+            <div class="card-badges">
+              <span class="badge technique">Technique</span>
+              <span class="badge study">Review</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Microdebrider systems with suction and continuous irrigation for improved visualization. Superior intraoperative visualization, more precise correction of posterior deformities and isolated spurs, and lower complication rates vs. conventional headlight technique. Confirmed in a January 2026 narrative review.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">JAN 2026</span>
+            <a class="card-source" href="https://www.mdpi.com/1648-9144/62/1/135" target="_blank" rel="noopener">MDPI Medicina &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--violet);">
+          <div class="card-top">
+            <div class="card-title">Piezosurgery / Ultrasonic Septoplasty</div>
+            <div class="card-badges">
+              <span class="badge new">New</span>
+              <span class="badge technique">Technique</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Uses ultrasonic vibrations for precise bone and cartilage reshaping with minimal tissue trauma. 2025 innovations include AI-assisted real-time bone mapping and the ability to tailor vibration frequencies to individual patient bone density and nasal structure. Preserves structural integrity better than traditional instrumentation.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2025</span>
+            <a class="card-source" href="https://drmaniarash.com/en/rhinoplasty-piezosurgery-2025-nose-surgery/" target="_blank" rel="noopener">Piezo Rhinoplasty &rarr;</a>
           </div>
         </div>
 
@@ -758,23 +1100,27 @@
 
         <div class="card" style="--card-accent: var(--violet);">
           <div class="card-top">
-            <div class="card-title">Modified Extracorporeal Septoplasty</div>
+            <div class="card-title">Modified Extracorporeal Septoplasty (Prospective Study)</div>
             <div class="card-badges">
-              <span class="badge study">Study</span>
+              <span class="badge study">Prospective</span>
               <span class="badge technique">Technique</span>
             </div>
           </div>
           <div class="card-body">
-            Prospective study showing improved quality of life and aesthetics with a low complication rate. Modified maneuvers preserve the philosophy of extracorporeal septoplasty while reducing technical complexity, decreasing surgical time, and eliminating the need for drills. Keystone preservation reduces risk of dorsal destabilization.
+            Improved quality of life and aesthetics with low complications. Modified maneuvers preserve the extracorporeal septoplasty philosophy while reducing technical complexity, decreasing surgical time, and eliminating the need for drills. Keystone preservation reduces risk of dorsal destabilization.
           </div>
           <div style="display: flex; gap: 16px; flex-wrap: wrap;">
             <div class="card-stat">
-              <span>NOSE score reduction:</span>
+              <span>NOSE reduction:</span>
               <span class="stat-value">-42.0</span>
             </div>
             <div class="card-stat">
               <span>Residual deviation:</span>
               <span class="stat-value">7.4%</span>
+            </div>
+            <div class="card-stat">
+              <span>Minor perforation:</span>
+              <span class="stat-value">3.7%</span>
             </div>
           </div>
           <div class="card-footer" style="margin-top: 16px;">
@@ -785,14 +1131,14 @@
 
         <div class="card" style="--card-accent: var(--blue);">
           <div class="card-top">
-            <div class="card-title">Sling-Bridge Technique</div>
+            <div class="card-title">Sling-Bridge Technique in Extracorporeal Septorhinoplasty</div>
             <div class="card-badges">
               <span class="badge new">New</span>
               <span class="badge technique">Technique</span>
             </div>
           </div>
           <div class="card-body">
-            A novel technique in extracorporeal septorhinoplasty that introduces a new method for stabilizing the reconstructed septum. Published in Frontiers in Surgery (2024), representing an evolution in how surgeons approach complex septal deformities involving the L-strut.
+            Novel technique for stabilizing the reconstructed septum during extracorporeal septorhinoplasty. Published in Frontiers in Surgery (2024). Represents an evolution in managing complex septal deformities involving the L-strut.
           </div>
           <div class="card-footer">
             <span class="card-date">2024</span>
@@ -802,17 +1148,93 @@
 
         <div class="card" style="--card-accent: var(--violet);">
           <div class="card-top">
-            <div class="card-title">Septoplasty vs. Non-Surgical: Meta-Analysis</div>
+            <div class="card-title">Septoplasty for Deviated Septum with Allergic Rhinitis</div>
             <div class="card-badges">
               <span class="badge study">Meta-Analysis</span>
             </div>
           </div>
           <div class="card-body">
-            A 2025 systematic review and meta-analysis of randomized controlled trials found that septoplasty significantly improved NOSE scores compared to non-surgical interventions at 6 and 12 months, though no notable differences at 3 months. Strengthens the evidence base for surgical intervention in moderate-to-severe cases.
+            November 2024 meta-analysis published in Nature Scientific Reports. Found that patients with both deviated septum and allergic rhinitis benefit significantly from septoplasty, but outcomes require experienced clinicians accounting for specific septal conditions.
           </div>
           <div class="card-footer">
-            <span class="card-date">2025</span>
-            <a class="card-source" href="https://link.springer.com/article/10.1007/s00405-024-08937-x" target="_blank" rel="noopener">Springer &rarr;</a>
+            <span class="card-date">NOV 2024</span>
+            <a class="card-source" href="https://www.nature.com/articles/s41598-024-80377-3" target="_blank" rel="noopener">Nature &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Non-Surgical Alternatives -->
+    <div class="category">
+      <div class="category-label">Non-Surgical &amp; In-Office Alternatives</div>
+      <div class="cards-grid">
+
+        <div class="card highlight" style="--card-accent: var(--rose);">
+          <div class="card-top">
+            <div class="card-title">VivAer Nasal Airway Remodeling (4-Year Data)</div>
+            <div class="card-badges">
+              <span class="badge fda">FDA Cleared</span>
+              <span class="badge device">Device</span>
+            </div>
+          </div>
+          <div class="card-body">
+            In-office procedure using controlled low-temperature radiofrequency energy to remodel nasal valve tissue. An active prospective study at Cedars-Sinai (NCT06922955) is comparing VivAer head-to-head against septoplasty and functional rhinoplasty.
+          </div>
+          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <div class="card-stat">
+              <span>Breathing improvement (4yr):</span>
+              <span class="stat-value">96%</span>
+            </div>
+            <div class="card-stat">
+              <span>Sleep improvement:</span>
+              <span class="stat-value">96%</span>
+            </div>
+            <div class="card-stat">
+              <span>Exercise breathing:</span>
+              <span class="stat-value">93%</span>
+            </div>
+          </div>
+          <div class="card-footer" style="margin-top: 16px;">
+            <span class="card-date">4-YEAR DATA</span>
+            <a class="card-source" href="https://clinicaltrials.cedars-sinai.edu/view/CTP1563" target="_blank" rel="noopener">Cedars-Sinai &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--rose);">
+          <div class="card-top">
+            <div class="card-title">RhinAer Posterior Nasal Nerve Ablation</div>
+            <div class="card-badges">
+              <span class="badge device">Device</span>
+              <span class="badge study">Study</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Temperature-controlled radiofrequency that disrupts the posterior nasal nerve and treats the swell body and inferior turbinate in a single session. Office-based under local anesthesia. Two-year multicenter data shows 88% responder rate.
+          </div>
+          <div class="card-stat">
+            <span>NOSE score decrease (12mo):</span>
+            <span class="stat-value">65.4%</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2024</span>
+            <a class="card-source" href="https://rhinaer.com/hcp/" target="_blank" rel="noopener">RhinAer &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="--card-accent: var(--blue);">
+          <div class="card-top">
+            <div class="card-title">Coblation Technology (Low-Temperature Plasma)</div>
+            <div class="card-badges">
+              <span class="badge device">Device</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Low-temperature plasma technology for turbinate reduction and septal swell body reduction. Minimally invasive, preserves mucosal cilia function. Used as adjunct to or alternative to traditional turbinate surgery.
+          </div>
+          <div class="card-footer">
+            <span class="card-date">ESTABLISHED</span>
+            <a class="card-source" href="https://link.springer.com/article/10.1007/s00405-016-3946-0" target="_blank" rel="noopener">Springer &rarr;</a>
           </div>
         </div>
 
@@ -821,8 +1243,29 @@
 
     <!-- Materials & Implants -->
     <div class="category">
-      <div class="category-label">Materials &amp; Implant Innovation</div>
+      <div class="category-label">Implants, Materials &amp; Tissue Engineering</div>
       <div class="cards-grid">
+
+        <div class="card" style="--card-accent: var(--teal);">
+          <div class="card-top">
+            <div class="card-title">LATERA Absorbable Nasal Implant (Stryker)</div>
+            <div class="card-badges">
+              <span class="badge fda">FDA Cleared</span>
+              <span class="badge device">Device</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Made of polydioxanone, FDA-cleared for nasal valve collapse. Inserted in-office under local anesthesia. Absorbs over ~18 months; collagen construct replaces implant by 24 months. A 2024 claims analysis compared LATERA to surgical repair outcomes.
+          </div>
+          <div class="card-stat">
+            <span>NOSE score reduction (2yr):</span>
+            <span class="stat-value">58.2%</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-date">2-YEAR DATA</span>
+            <a class="card-source" href="https://www.stryker.com/us/en/ent/products/latera-absorbable-nasal-implant-system.html" target="_blank" rel="noopener">Stryker &rarr;</a>
+          </div>
+        </div>
 
         <div class="card" style="--card-accent: var(--teal);">
           <div class="card-top">
@@ -833,7 +1276,7 @@
             </div>
           </div>
           <div class="card-body">
-            Composite microporous polycaprolactone (PCL) nasal implants created via 3D printing demonstrate long-term clinical efficacy and safety. The implants provide proper mechanical support with excellent biocompatibility and surgical manipulability. Patient-specific designs enable precise fit for individual septal anatomy.
+            Composite microporous polycaprolactone (PCL) nasal implants via 3D printing demonstrate long-term clinical efficacy and safety. Multicenter study confirmed clinical applicability. PCL degrades over 2-3 years, allowing tissue integration. Patient-specific designs enable precise fit.
           </div>
           <div class="card-footer">
             <span class="card-date">2024-2025</span>
@@ -841,43 +1284,44 @@
           </div>
         </div>
 
-        <div class="card" style="--card-accent: var(--teal);">
+        <div class="card" style="--card-accent: var(--violet);">
           <div class="card-top">
-            <div class="card-title">Bioabsorbable PLA/PCL Mesh Splints</div>
+            <div class="card-title">Cartilage Tissue Engineering (Autologous Chondrocytes)</div>
             <div class="card-badges">
-              <span class="badge device">Device</span>
+              <span class="badge study">Research</span>
             </div>
           </div>
           <div class="card-body">
-            3D-printed bioabsorbable nasal splints made from PLA or PCL that degrade after 2-3 years, providing sufficient support time post-surgery. Used as inner splints to prevent secondary deformation, with simple design allowing easy insertion between septal cartilage and perichondrium without specific complications.
+            Autologous chondrocytes harvested from nasal septum, cultured on collagen matrix for 4 weeks, and reimplanted. Safety and efficacy demonstrated in 100+ individuals. Adipose-derived stem cells in decellularized porcine nasal cartilage scaffolds show high proliferation and chondrogenic differentiation.
           </div>
           <div class="card-footer">
-            <span class="card-date">2024-2025</span>
-            <a class="card-source" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10180510/" target="_blank" rel="noopener">PMC &rarr;</a>
+            <span class="card-date">2025</span>
+            <a class="card-source" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12476812/" target="_blank" rel="noopener">PMC &rarr;</a>
           </div>
         </div>
 
         <div class="card" style="--card-accent: var(--blue);">
           <div class="card-top">
-            <div class="card-title">3D Printing in Nasal Reconstruction: Review</div>
+            <div class="card-title">3D Bioprinting for Nasal Cartilage</div>
             <div class="card-badges">
-              <span class="badge study">Review</span>
+              <span class="badge study">Research</span>
+              <span class="badge device">Device</span>
             </div>
           </div>
           <div class="card-body">
-            Comprehensive 2025 review covering 3D printing applications in nasal reconstruction from 2012-2024. Documents patient-specific interventions, including titanium implants for pediatric reconstruction and bioresorbable polymer implants at the point of care. Establishes evidence base for when and why 3D printing works.
+            Patient-specific scaffolds combining non-resorbable cores with hydrogels loaded with autologous chondrocytes or mesenchymal stem cells. A 2024 Frontiers in Surgery case report documented a pediatric nasal reconstruction using a 3D-printed patient-specific titanium implant.
           </div>
           <div class="card-footer">
-            <span class="card-date">2025</span>
-            <a class="card-source" href="https://www.mdpi.com/2227-9059/13/6/1434" target="_blank" rel="noopener">MDPI &rarr;</a>
+            <span class="card-date">2024-2025</span>
+            <a class="card-source" href="https://www.frontiersin.org/journals/surgery/articles/10.3389/fsurg.2024.1330889/full" target="_blank" rel="noopener">Frontiers &rarr;</a>
           </div>
         </div>
 
       </div>
     </div>
+
   </section>
 
-  <!-- Disclaimer -->
   <div class="disclaimer">
     <strong>DISCLAIMER:</strong> This tracker aggregates publicly available research for personal reference only. It does not constitute medical advice. Always consult qualified healthcare providers for treatment decisions. Sources linked where available. Research landscape current as of March 2026.
   </div>
@@ -885,7 +1329,6 @@
 </div>
 
 <script>
-  // Intersection Observer for scroll-triggered animations
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -895,7 +1338,7 @@
     });
   }, { threshold: 0.1 });
 
-  document.querySelectorAll('.card, .stat-item').forEach(el => {
+  document.querySelectorAll('.card, .stat-item, .guidelines-box').forEach(el => {
     el.style.animationPlayState = 'paused';
     observer.observe(el);
   });
